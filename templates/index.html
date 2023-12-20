@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.menu {
+  float: left;
+  width: 10%;
+}
+.menuitem {
+  padding: 8px;
+  margin-top: 7px;
+  border-bottom: 1px solid #f1f1f1;
+}
+.float-container {
+    border: 3px solid #fff;
+    padding: 90px 5px;
+}
+
+.float-child {
+    width: 50%;
+    float: left;
+    padding: 5px;
+}  
+/* Styles for the Display Search Engine and TF-IDF Scores boxes */
+.section {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+  .main, .right {
+    width: 100%; /* Set both sections to 100% width */
+  }
+}
+@media only screen and (max-width:500px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body style="font-family:Verdana;">
+
+<div style="background-color:#f1f1f1;text-align:center;padding:10px;margin-top:7px;text-align: center;position: fixed;font-size:12px;width: 100%;top: 0;z-index: 1000;">
+  <h1>Academic Network Function</h1>
+  <h3>Created By Md Mahbubur Rahman</h3>
+</div>
+
+<div class="float-container">
+
+<!-- <div style="overflow:auto; margin-top: 120px">
+  <div class="menu">
+    <div class="menuitem">Search Engine</div>
+    <div class="menuitem">Extract All Keywords</div>
+  </div>
+</div> -->
+
+ 
+
+    <!-- Display Search Engine -->
+    <div class="float-child";>
+        <h1>Search Engine</h1>
+        <form method="post" action="/">
+            <label for="user_input">Enter a sentence:</label>
+            <input type="text" id="user_input" name="user_input" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if suggestions %}
+            <div class="section">
+                <h2>Search Results:</h2>
+                <ul class="result-list">
+                    {% for suggestion in suggestions %}
+                        <li>
+                            <p>Paper Title: {{ suggestion['ptitle'] }}</p>
+                            <p>Author: {{ suggestion['author'] }}</p>
+                            <p>Year: {{ suggestion['year'] }}</p>
+                            <p>Similarity: {{ suggestion['similarity'] }}</p>
+                            <p>Keywords: {{ suggestion['keywords'] }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Display TF-IDF scores section -->
+    <div class="float-child">
+        {% if tfidf_scores %}
+            <div class="section">
+                <h2>TF-IDF Scores:</h2>
+                <table class="tfidf-table">
+                    <tr>
+                        <th>Feature</th>
+                        <th>TF-IDF Score</th>
+                    </tr>
+                    {% for feature, tfidf_score in tfidf_scores %}
+                        <tr>
+                            <td>{{ feature }}</td>
+                            <td>{{ tfidf_score }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div>
+    <h2>Keywords Section</h2>
+    <h3>This button will extract all the keywords from the dataset</h3>
+    <form method="post" action="/keywords">
+        <input type="submit" value="Click Me">
+    </form>
+
+    {% if keywords %}
+        <h2>Top Keywords:</h2>
+        <ul>
+            {% for keyword_info in keywords %}
+                <li>
+                    <p>Title: {{ keyword_info['ptitle'] }}</p>
+                    <p>Author: {{ keyword_info['author'] }}</p>
+                    <p>Year: {{ keyword_info['year'] }}</p>
+                    <p>Keywords: {{ keyword_info['keywords'] }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+</div>
+<div style="background-color:#f1f1f1;text-align:center;padding:10px;margin-top:7px;text-align: center;position: fixed;font-size:12px;width: 100%;bottom: 0;z-index: 1000;"> © 2023 Your Search Engine. </div>
+
+</body> 
+</html>
